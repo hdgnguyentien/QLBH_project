@@ -6,25 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLBH_project.Models;
-using QLBH_project.Repositories;
 
 namespace QLBH_project.Controllers
 {
-    public class employeesController : Controller
+    public class categoriesController : Controller
     {
         private readonly CuaHangDbContext _context;
-        public employeesController(CuaHangDbContext context)
+
+        public categoriesController(CuaHangDbContext context)
         {
             _context = context;
         }
 
-        // GET: employees
+        // GET: categories
         public async Task<IActionResult> Index()
         {
-            var cuaHangDbContext = _context.employees.Include(e => e.roles);
-            return View(await cuaHangDbContext.ToListAsync());
+            return View(await _context.categories.ToListAsync());
         }
-        // GET: employees/Details/5
+
+        // GET: categories/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -32,43 +32,40 @@ namespace QLBH_project.Controllers
                 return NotFound();
             }
 
-            var employees = await _context.employees
-                .Include(e => e.roles)
+            var categories = await _context.categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employees == null)
+            if (categories == null)
             {
                 return NotFound();
             }
 
-            return View(employees);
+            return View(categories);
         }
 
-        // GET: employees/Create
+        // GET: categories/Create
         public IActionResult Create()
         {
-            ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename");
             return View();
         }
 
-        // POST: employees/Create
+        // POST: categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,roleID,Email,Password,Fullname,Address,Phone,Status")] employees employees)
+        public async Task<IActionResult> Create([Bind("Id,Name")] categories categories)
         {
             if (ModelState.IsValid)
             {
-                employees.Id = Guid.NewGuid();
-                _context.Add(employees);
+                categories.Id = Guid.NewGuid();
+                _context.Add(categories);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename", employees.roleID);
-            return View(employees);
+            return View(categories);
         }
 
-        // GET: employees/Edit/5
+        // GET: categories/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -76,23 +73,22 @@ namespace QLBH_project.Controllers
                 return NotFound();
             }
 
-            var employees = await _context.employees.FindAsync(id);
-            if (employees == null)
+            var categories = await _context.categories.FindAsync(id);
+            if (categories == null)
             {
                 return NotFound();
             }
-            ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename", employees.roleID);
-            return View(employees);
+            return View(categories);
         }
 
-        // POST: employees/Edit/5
+        // POST: categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,roleID,Email,Password,Fullname,Address,Phone,Status")] employees employees)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] categories categories)
         {
-            if (id != employees.Id)
+            if (id != categories.Id)
             {
                 return NotFound();
             }
@@ -101,12 +97,12 @@ namespace QLBH_project.Controllers
             {
                 try
                 {
-                    _context.Update(employees);
+                    _context.Update(categories);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!employeesExists(employees.Id))
+                    if (!categoriesExists(categories.Id))
                     {
                         return NotFound();
                     }
@@ -117,11 +113,10 @@ namespace QLBH_project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename", employees.roleID);
-            return View(employees);
+            return View(categories);
         }
 
-        // GET: employees/Delete/5
+        // GET: categories/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -129,31 +124,30 @@ namespace QLBH_project.Controllers
                 return NotFound();
             }
 
-            var employees = await _context.employees
-                .Include(e => e.roles)
+            var categories = await _context.categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employees == null)
+            if (categories == null)
             {
                 return NotFound();
             }
 
-            return View(employees);
+            return View(categories);
         }
 
-        // POST: employees/Delete/5
+        // POST: categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var employees = await _context.employees.FindAsync(id);
-            _context.employees.Remove(employees);
+            var categories = await _context.categories.FindAsync(id);
+            _context.categories.Remove(categories);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool employeesExists(Guid id)
+        private bool categoriesExists(Guid id)
         {
-            return _context.employees.Any(e => e.Id == id);
+            return _context.categories.Any(e => e.Id == id);
         }
     }
 }

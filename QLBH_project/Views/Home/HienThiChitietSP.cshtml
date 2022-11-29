@@ -1,0 +1,30 @@
+﻿@model IEnumerable<QLBH_project.Models.productdetails> 
+@{
+    ViewData["Title"] = "HienThiChitietSP";
+}
+
+<h1 class=" text-center">Sản Phẩm bán chạy</h1>
+  <div class="container">
+    <div class="row">
+        @foreach(var item in Model){
+      <div class="col-lg-4"  >
+        <div class="card" style="width: 22rem; margin-bottom: 30px">
+               <img src="~/image/products/@item.LinkImage">
+          <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    <h3 class="card-text fw-bold"> @Html.DisplayFor(modelItem => item.Price)</h3>
+            <div class="d-grid gap-2 d-md-block">
+              <button class="btn btn-outline-success" type="button">
+                Thêm vào giỏ hàng
+              </button>
+              <button class="btn btn-outline-warning" type="button">
+                Mua ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        }
+
+    </div>
+  </div>

@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QLBH_project.Controllers;
+using QLBH_project.IRepositories;
 using QLBH_project.Models;
+using QLBH_project.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,11 @@ namespace QLBH_project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddMvc();
+            services.AddScoped<IProductDetailRepositories, ProductDetailRepositories>();
+            services.AddScoped<IProductRepositories, ProductRepositories>();
             services.AddScoped<CuaHangDbContext, CuaHangDbContext>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

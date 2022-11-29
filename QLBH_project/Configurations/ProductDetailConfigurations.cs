@@ -15,7 +15,7 @@ namespace QLBH_project.Configurations
             builder.Property(x => x.OriginalPrice).HasColumnType("Decimal").IsRequired();
             builder.Property(x => x.Stock).IsRequired();
             builder.Property(x => x.DateCreated).IsRequired().HasColumnType("DateTime");
-            builder.Property(x => x.LinkImage).IsRequired();
+            builder.Property(x => x.LinkImage);
             builder.Property(x => x.Status).IsRequired().HasColumnType("bit");
 
             builder.HasOne(g => g.products).WithMany(x => x.productdetails).HasForeignKey(p => p.ProductId);

@@ -1,4 +1,5 @@
-﻿using QLBH_project.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using QLBH_project.IRepositories;
 using QLBH_project.Models;
 using System;
 using System.Collections.Generic;
@@ -31,13 +32,16 @@ namespace QLBH_project.Repositories
 
         public IEnumerable<productdetails> GetAll()
         {
-            return cuaHangDbContext.productdetails.ToList();
+            var productdetails = cuaHangDbContext.productdetails.Include(p => p.categories).Include(p => p.products).ToList();
+            return productdetails;
         }
 
         public productdetails GetByID(Guid id)
         {
-            var prodetail = cuaHangDbContext.productdetails.FirstOrDefault(p => p.Id == id);
-            return prodetail;
+            var productdetails = cuaHangDbContext.productdetails.Include(p => p.categories)
+                                                                .Include(p => p.products)
+                                                                .FirstOrDefault(x=>x.Id == id);
+            return productdetails;
         }
 
         public bool Removeproductdetails(productdetails productdetails)

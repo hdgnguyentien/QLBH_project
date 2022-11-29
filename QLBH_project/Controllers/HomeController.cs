@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using QLBH_project.Models;
 using System;
@@ -12,10 +13,11 @@ namespace QLBH_project.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private CuaHangDbContext _context;
+        public HomeController(ILogger<HomeController> logger, CuaHangDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -25,9 +27,13 @@ namespace QLBH_project.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            return RedirectToAction("HienThiChitietSp");
         }
-
+        public async Task< IActionResult> HienThiChitietSp()
+        {
+            var cuaHangDbContext = _context.productdetails.Include(p => p.categories).Include(p => p.products);
+            return View(await cuaHangDbContext.ToListAsync());
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

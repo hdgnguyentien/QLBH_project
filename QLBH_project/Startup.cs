@@ -27,9 +27,15 @@ namespace QLBH_project
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddSession(p =>
+            {
+                p.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
             services.AddControllersWithViews();
             services.AddMvc();
             services.AddScoped<IProductDetailRepositories, ProductDetailRepositories>();
+            services.AddScoped<ICartRepositories, CartRepositories>();
             services.AddScoped<IProductRepositories, ProductRepositories>();
             services.AddScoped<CuaHangDbContext, CuaHangDbContext>();
             
@@ -50,9 +56,9 @@ namespace QLBH_project
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+           
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

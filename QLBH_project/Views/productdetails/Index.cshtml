@@ -7,20 +7,20 @@
 
 }
 
-<h1>Index</h1>
+<h1>Sản Phẩm Chi Tiết</h1>
 
 <p>
     <a asp-action="Create">Create New</a><br />
     <a asp-action="SearchByName">Tìm kiếm</a>
 </p>
-<form method="get" asp-controller="productdetails" asp-action="SearchByName">
-    <input name="name" type="text" placeholder="Search"/>
-    <button type="submit">Tìm Kiếm</button><br />
+<form method="get" asp-controller="productdetails" asp-action="SearchByName2">
+    <input name="name" type="text" placeholder="Search"class="form-control col-2"/>
+    <button type="submit"class="btn btn-success ">Tìm Kiếm</button><br />
 </form>
 <form method="get" asp-controller="productdetails" asp-action="SearchByPrice">
-    <input name="gia1" type="text" placeholder="Nhap khoang gia 1"/>
-    <input name="gia2" type="text" placeholder="Nhap khoang gia 2"/>
-    <button type="submit">Tìm Kiếm Theo Giá</button><br />
+    <input name="gia1" type="text" placeholder="Nhap khoang gia 1"class="form-control col-2"/>
+    <input name="gia2" type="text" placeholder="Nhap khoang gia 2"class="form-control col-2"/>
+    <button type="submit" class="btn btn-success ">Tìm Kiếm Theo Giá</button><br />
 </form>
 @if (thongbao!= null)
 {
@@ -46,7 +46,7 @@
                 @Html.DisplayNameFor(model => model.DateCreated)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LinkImage)
+                Ảnh Sản Phẩm
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -79,7 +79,7 @@
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LinkImage)
+                       <img src="@item.LinkImage"style="width: 70px;height:40px" >
             </td>
             <td>
                 @(item.Status ? "Mở bán" : "Không mở bán")

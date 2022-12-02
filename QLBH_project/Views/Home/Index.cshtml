@@ -1,9 +1,40 @@
-﻿@model IEnumerable<QLBH_project.Models.employees>
+﻿@model IEnumerable<QLBH_project.Models.productdetails> 
+
 @{
     ViewData["Title"] = "Home Page";
+    var thongtin = ViewData["thongtin"] as string;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*    @if(thongtin != null){
+        <h1>Xin chào đây là: @thongtin</h1>
+    }else{
+        <h1>Xin chào </h1>
+    }*@
 </div>
+<h1 class=" text-center">Sản Phẩm</h1>
+  <div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+          <div class="col-lg-4"  >
+            <div class="card" style="width: 22rem; margin-bottom: 30px">
+                   <img src="@item.LinkImage" >
+              <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <h3 class="card-text fw-bold"> @Html.DisplayFor(modelItem => item.Price)</h3>
+                <div class="d-grid gap-2 d-md-block">
+                  <a class="btn btn-outline-success"
+                    asp-controller="Cart" 
+                    asp-action="Add"
+                    asp-route-id="@item.Id">
+                    Thêm vào giỏ hàng
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+    </div>
+  </div>

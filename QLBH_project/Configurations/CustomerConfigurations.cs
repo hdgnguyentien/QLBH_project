@@ -14,6 +14,7 @@ namespace QLBH_project.Configurations
             builder.Property(x => x.Phone).IsRequired().HasMaxLength(10);
             builder.Property(x => x.Address);
 
+            
         }
     }
 }

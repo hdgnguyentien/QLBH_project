@@ -1,12 +1,14 @@
-﻿using System;
-using System.Web;
+﻿using Microsoft.AspNetCore.Http;
+using QLBH_project.IRepositories;
+using QLBH_project.Models;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-namespace QLBH_project.Models
+namespace QLBH_project.ViewModels
 {
-    public class productdetails
+    public class ViewProductdetails
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
@@ -16,11 +18,9 @@ namespace QLBH_project.Models
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public DateTime DateCreated { get; set; }
-        public string? LinkImage { get; set; }
+        public string LinkImage { get; set; }
         public bool Status { get; set; }
-        public List<cart> carts { get; set; }
-        public products products { get; set; }
-        public categories categories { get; set; }
-        public List<orderdetails> orderdetails { get; set; }
+        public IFormFile ProductdtImage { get; set; }
     }
+
 }

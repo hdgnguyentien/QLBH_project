@@ -1,0 +1,58 @@
+﻿@model QLBH_project.ViewModels.ViewCart
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Cart Overview";
+    var countpro = ViewData["countpro"] as string;
+}
+@if(Model.cartItems.Count>0){
+    <h3>Giỏ hàng </h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ảnh sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá bán</th>
+                <th>Số lượng</th>
+                <th></th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.cartItems)
+            {
+                    <tr>
+                        <td><img src="@item.Image" width="60"/></td>
+                        <td>@item.ProductdetailsName</td>
+                        <td>@item.Price</td>
+                        <td>@item.Quatity</td>
+                        <td>
+                            <a asp-action="Add" asp-route-id="@item.IdProductdetails" class="btn btn-sm btn-primary">+</a>
+                            <a asp-action="Tru" asp-route-id="@item.IdProductdetails" class="btn btn-sm btn-success">-</a>
+                            <a asp-action="Remove" asp-route-id="@item.IdProductdetails" class="btn btn-sm btn-danger">Remove</a>
+                        </td>
+                        <td>@item.Total</td>
+
+                    </tr>
+            }
+            <tr>
+                    <td class="text-right" colspan="6"><h6>Tổng tiền: @Model.grandtotal</h6> </td>
+            </tr>
+            <tr>
+                    <td colspan="6"class="text-right">
+                        <a asp-action="Clear" class="btn btn-danger ">Clear Cart</a>
+                        <a asp-action="CheckOut" class="btn btn-primary">Check Out</a>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6"class="text-left "><a asp-controller="Home" asp-action="Index" class="btn btn-success">Tiếp tục mua</a></td>
+            </tr>
+        </tfoot>
+    </table>
+}else{
+    <h3> Chưa có sản phẩm nào trong giỏ hàng</h3>
+    <a asp-action="Index" asp-controller="Home">về trang chủ</a>
+}

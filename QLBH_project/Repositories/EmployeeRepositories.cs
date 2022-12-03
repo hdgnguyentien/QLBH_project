@@ -1,4 +1,5 @@
-﻿using QLBH_project.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using QLBH_project.IRepositories;
 using QLBH_project.Models;
 using System;
 using System.Collections.Generic;
@@ -31,14 +32,14 @@ namespace QLBH_project.Repositories
 
         public IEnumerable<employees> GetAll()
         {
-            return cuaHangDbContext.employees.ToList();
+            var employees = cuaHangDbContext.employees.Include(x => x.roles).ToList();
+            return employees;
         }
 
         public employees GetByID(Guid id)
         {
             return cuaHangDbContext.employees.FirstOrDefault(p => p.Id == id);
         }
-
         public bool Removeemployees(employees employees)
         {
             try

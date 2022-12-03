@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace QLBH_project.Controllers
         // GET: categories
         public async Task<IActionResult> Index()
         {
+            var thongtin = HttpContext.Session.GetString("username");
+            ViewData["thongtin"] = thongtin;
             return View(await _context.categories.ToListAsync());
         }
 

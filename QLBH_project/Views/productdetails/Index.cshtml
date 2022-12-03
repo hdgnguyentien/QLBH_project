@@ -11,7 +11,6 @@
 
 <p>
     <a asp-action="Create">Create New</a><br />
-    <a asp-action="SearchByName">Tìm kiếm</a>
 </p>
 <form method="get" asp-controller="productdetails" asp-action="SearchByName2">
     <input name="name" type="text" placeholder="Search"class="form-control col-2"/>
@@ -79,7 +78,7 @@
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
             <td>
-                       <img src="@item.LinkImage"style="width: 70px;height:40px" >
+                       <img src="@item.LinkImage"width="60" >
             </td>
             <td>
                 @(item.Status ? "Mở bán" : "Không mở bán")

@@ -4,8 +4,9 @@
 *@
 @{
     ViewData["Title"] = "Cart Overview";
-    var countpro = ViewData["countpro"] as string;
+    var countCartItems = ViewData["countCartItems"] as string;
 }
+
 @if(Model.cartItems.Count>0){
     <h3>Giỏ hàng </h3>
     <table class="table">
@@ -40,9 +41,10 @@
                     <td class="text-right" colspan="6"><h6>Tổng tiền: @Model.grandtotal</h6> </td>
             </tr>
             <tr>
-                    <td colspan="6"class="text-right">
-                        <a asp-action="Clear" class="btn btn-danger ">Clear Cart</a>
-                        <a asp-action="CheckOut" class="btn btn-primary">Check Out</a>
+                <td colspan="6"class="text-right">
+                   <a asp-action="Clear" class="btn btn-danger ">Clear Cart</a>
+                   <a asp-action="CheckOut" class="btn btn-primary">Check Out</a>
+                   
                 </td>
             </tr>
         </tbody>

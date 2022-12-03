@@ -5,16 +5,12 @@
     var thongbao = ViewData["result"] as string;
 }
 
-<h1>Index</h1>
+<h1>Sản phẩm</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
-    <a asp-action="SearchByName">Search By Name</a>
 </p>
-<form method="get" asp-controller="products" asp-action="SearchByName2">
-    <input name="name" type="text" placeholder="Search"/>
-    <button type="submit">Tìm Kiếm</button>
-</form>
+
 
 @if (Model != null)
 { 

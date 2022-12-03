@@ -4,16 +4,8 @@
 *@ 
 @model IEnumerable<QLBH_project.Models.products>
 @{
-    var thongbao = ViewData["result"] as string;
 }
-<h2>Kiểm Tra tìm kiếm</h2>
-<form method="get" asp-controller="products" asp-action="SearchByName">
-    <input name="name" type="text" placeholder="Search"/>
-    <button type="submit">Tìm Kiếm</button>
-</form>
-@if (Model != null)
-{
-            <table class="table">
+     <table class="table">
             <thead>
                 <tr>
                     <th>
@@ -44,9 +36,3 @@
             }
             </tbody>
         </table>
-
-}
-else
-{
-        <a>@thongbao</a>
-}

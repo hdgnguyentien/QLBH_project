@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +36,7 @@ namespace QLBH_project
             services.AddControllersWithViews();
             services.AddMvc();
             services.AddScoped<IProductDetailRepositories, ProductDetailRepositories>();
+            services.AddScoped<IEmployeeRepositories, EmployeeRepositories>();
             services.AddScoped<ICartRepositories, CartRepositories>();
             services.AddScoped<IProductRepositories, ProductRepositories>();
             services.AddScoped<CuaHangDbContext, CuaHangDbContext>();

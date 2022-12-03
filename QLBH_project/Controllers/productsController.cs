@@ -24,6 +24,8 @@ namespace QLBH_project.Controllers
         // GET: products
         public async Task<IActionResult> Index()
         {
+            var thongtin = HttpContext.Session.GetString("username");
+            ViewData["thongtin"] = thongtin;
             return View(await _context.products.ToListAsync());
         }
 
@@ -151,44 +153,6 @@ namespace QLBH_project.Controllers
         private bool productsExists(Guid id)
         {
             return _context.products.Any(e => e.Id == id);
-        }
-        public IActionResult SearchByName()
-        {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult SearchByName(string name)
-        {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var result = _productRepositories.GetAll().Where(p => p.Name.Contains(name)).ToList();
-                if (result.Count > 0)
-                {
-                    return View("Index", result);
-                }
-                else
-                {
-                    ViewData["result"] = "Không có sản phẩm nào tên " + name;
-                }
-            }
-            return View();
-        }
-        [HttpGet]
-        public IActionResult SearchByName2(string name)
-        {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var result = _productRepositories.GetAll().Where(p => p.Name.Contains(name)).ToList();
-                if (result.Count > 0)
-                {
-                    return View("Index", result);
-                }
-                else
-                {
-                    ViewData["result"] = "Không có sản phẩm nào tên " + name;
-                }
-            }
-            return View("Index");
         }
 
     }

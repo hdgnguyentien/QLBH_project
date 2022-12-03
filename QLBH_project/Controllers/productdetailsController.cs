@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using QLBH_project.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace QLBH_project.Controllers
 {
@@ -36,6 +37,8 @@ namespace QLBH_project.Controllers
         // GET: productdetails
         public IActionResult Index()
         {
+            var thongtin = HttpContext.Session.GetString("username");
+            ViewData["thongtin"] = thongtin;
             var lst = _productdetails.GetAll();
             return View(lst);
         }

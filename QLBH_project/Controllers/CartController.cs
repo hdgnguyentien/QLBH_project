@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using QLBH_project.Helpers;
 using QLBH_project.IRepositories;
 using QLBH_project.Models;
@@ -21,12 +22,14 @@ namespace QLBH_project.Controllers
         }
         public IActionResult Index()
         {
+            var thongtin = HttpContext.Session.GetString("username");
             List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
             ViewCart viewCart = new ViewCart
             {
                 cartItems = cart,
                 grandtotal = cart.Sum(x => x.Price * x.Quatity)
             };
+            ViewData["thongtin"] = thongtin;
             return View(viewCart);
         }
         public  IActionResult Add(Guid id)
@@ -46,6 +49,23 @@ namespace QLBH_project.Controllers
             HttpContext.Session.SetObjectAsJson("Cart", cart);
 
             return RedirectToAction("Index");
+        }
+        public IActionResult AddtoCart(Guid id)
+        {
+            productdetails productdetails = _productdetails.GetByID(id);
+            List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            CartItem cartItem = cart.Where(x => x.IdProductdetails == id).FirstOrDefault();
+
+            if (cartItem == null)
+            {
+                cart.Add(new CartItem(productdetails));
+            }
+            else
+            {
+                cartItem.Quatity += 1;
+            }
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Tru(Guid id)
         {
@@ -91,12 +111,10 @@ namespace QLBH_project.Controllers
         public IActionResult Clear(Guid id)
         {
             HttpContext.Session.Remove("Cart");
-
             return RedirectToAction("Index");
         }
         public IActionResult CheckOut(Guid id)
         {
-
             return View();
         }
     }

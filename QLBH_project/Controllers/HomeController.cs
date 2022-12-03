@@ -20,12 +20,13 @@ namespace QLBH_project.Controllers
         private IProductDetailRepositories _productdetails;
        
         public HomeController(ILogger<HomeController> logger,
-                                IProductDetailRepositories productdetails 
+                                IProductDetailRepositories productdetails
+
                                )
         {
             _logger = logger;
             _productdetails = productdetails;
-           
+
 
         }
 
@@ -33,7 +34,7 @@ namespace QLBH_project.Controllers
         {
             var thongtin = HttpContext.Session.GetString("username");
             var result = _productdetails.GetAll();
-            HttpContext.Session.SetString("id_productdetails", id.ToString());
+            //HttpContext.Session.SetString("id_productdetails", id.ToString());
             if (thongtin != null)
             {
                 ViewData["thongtin"] = thongtin;
@@ -45,20 +46,6 @@ namespace QLBH_project.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-        public IActionResult Login(string username, string password)
-        {
-            if (string.IsNullOrEmpty(username) || password.Length < 6)
-            {
-                ViewData["ketqua"] = "Sai thông tin tài khoản";
-                return View();
-            }
-            else
-            {
-                HttpContext.Session.SetString("username", username);// lưu giữ liệu vào session
-                return RedirectToAction("Index");//đăng nhập thành công -> trang chủ
-            }
-            return View();
         }
     }
 }

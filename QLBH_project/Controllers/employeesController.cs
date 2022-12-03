@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using QLBH_project.IRepositories;
 using QLBH_project.Models;
 using QLBH_project.Repositories;
 
@@ -13,16 +15,20 @@ namespace QLBH_project.Controllers
     public class employeesController : Controller
     {
         private readonly CuaHangDbContext _context;
-        public employeesController(CuaHangDbContext context)
+        private readonly IEmployeeRepositories _employee;
+        public employeesController(CuaHangDbContext context,IEmployeeRepositories employee)
         {
             _context = context;
+            _employee = employee;
         }
 
         // GET: employees
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            var cuaHangDbContext = _context.employees.Include(e => e.roles);
-            return View(await cuaHangDbContext.ToListAsync());
+            var thongtin = HttpContext.Session.GetString("username");
+            ViewData["thongtin"] = thongtin;
+            var employees = _employee.GetAll();
+            return View(employees);
         }
         // GET: employees/Details/5
         public async Task<IActionResult> Details(Guid? id)

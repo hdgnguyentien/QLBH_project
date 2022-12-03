@@ -2,16 +2,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    var thongtin = ViewData["thongtin"] as string;
 }
-
-<div class="text-center">
-@*    @if(thongtin != null){
-        <h1>Xin chào đây là: @thongtin</h1>
-    }else{
-        <h1>Xin chào </h1>
-    }*@
-</div>
 <h1 class=" text-center">Sản Phẩm</h1>
   <div class="container">
     <div class="row">
@@ -24,12 +15,18 @@
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                         <h3 class="card-text fw-bold"> @Html.DisplayFor(modelItem => item.Price)</h3>
                 <div class="d-grid gap-2 d-md-block">
-                  <a class="btn btn-outline-success"
+                  <a class="btn btn-warning"
                     asp-controller="Cart" 
-                    asp-action="Add"
+                    asp-action="AddtoCart"
                     asp-route-id="@item.Id">
                     Thêm vào giỏ hàng
                   </a>
+                   <a class="btn btn-danger"
+                    asp-controller="Cart" 
+                    asp-action="Add"
+                    asp-route-id="@item.Id">
+                        Mua ngay
+                      </a>
                 </div>
               </div>
             </div>

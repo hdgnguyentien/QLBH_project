@@ -1,5 +1,6 @@
 ﻿
 @{
+    var thongtin = ViewData["thongtin"] as string;
 }
 
 <!DOCTYPE html>
@@ -19,49 +20,58 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="employees" asp-action="Index">Nhân Viên</a>
+                    <div class="btn-group">
+          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Quản lý nhân sự
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item text-dark" asp-controller="employees" asp-action="Index" >Nhân Viên</a>
+            <a class="dropdown-item text-dark" asp-controller="roles" asp-action="Index">Chức vụ</a>
+
+          </div>
+        </div>
+           
         </li> 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="productdetails" asp-action="Index">Sản phẩm chi tiết</a>
+        <div class="btn-group">
+          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Quản lý Sản phẩm
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item text-dark" asp-controller="productdetails" asp-action="Index" >Sản phẩm chi tiết</a>
+            <a class="dropdown-item text-dark" asp-controller="products" asp-action="Index">Sản phẩm</a>
+            <a class="dropdown-item text-dark" asp-controller="categories" asp-action="Index">Thể loại</a>
+
+          </div>
+        </div>
         </li>                        
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="products" asp-action="Index">Sản phẩm</a>
-        </li>
-                
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="roles" asp-action="Index">Chức Vụ</a>
-        </li>        
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="categories" asp-action="Index">Thể loại</a>
-        </li>
+                <li class="nav-item">
+        <div class="btn-group">
+          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Quản lý Khách hàng
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item text-dark" asp-controller="productdetails" asp-action="Index" >Sản phẩm chi tiết</a>
+            <a class="dropdown-item text-dark" asp-controller="products" asp-action="Index">Sản phẩm</a>
+            <a class="dropdown-item text-dark" asp-controller="categories" asp-action="Index">Thể loại</a>
+
+          </div>
+        </div>
+        </li>  
     </ul>
-    <form class="smallcart  form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
-       <a
-                class="nav-link active btn position-relative"
-                aria-current="page"
-                style="border: 0px"
-                asp-controller="Cart" 
-              >
-                <img
-                  src="image/cart.png"
-                  alt=""
-                  style="margin: 5px 5px 5px 5px"
-                />
-                <span
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >
-                </span>
-              </a>
-
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a>
+    <form class="form-inline my-2 my-lg-0">
+      
+      <div class="bagcart">
+            @await Component.InvokeAsync("BagCart")
+      </div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">@thongtin</a>
     </form>
   </div>
 </nav>

@@ -1,4 +1,5 @@
-﻿using QLBH_project.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using QLBH_project.IRepositories;
 using QLBH_project.Models;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,8 @@ namespace QLBH_project.Repositories
 
         public IEnumerable<orderdetails> GetAll()
         {
-            return cuaHangDbContext.orderdetails.ToList();
+            var result = cuaHangDbContext.orderdetails.Include(x => x.orders).Include(x => x.productdetails).ToList();
+            return result;
         }
 
         public orderdetails GetByID(Guid id)

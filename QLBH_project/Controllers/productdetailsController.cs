@@ -91,14 +91,13 @@ namespace QLBH_project.Controllers
             return View(productdetails);
         }
         // GET: productdetails/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var productdetails = await _context.productdetails.FindAsync(id);
+            var productdetails =  _productdetails.GetByID(id);
             if (productdetails == null)
             {
                 return NotFound();
@@ -109,13 +108,12 @@ namespace QLBH_project.Controllers
         }
 
         // POST: productdetails/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ProductId,CategoriesID,Name,OriginalPrice,Price,Stock,DateCreated,LinkImage,Status")] productdetails productdetails)
+        public IActionResult Edit(Guid id,productdetails productdetail,
+                                  ViewProductdetails viewProductdetailsImg)
         {
-            if (id != productdetails.Id)
+            if (id != productdetail.Id)
             {
                 return NotFound();
             }
@@ -124,12 +122,22 @@ namespace QLBH_project.Controllers
             {
                 try
                 {
-                    _context.Update(productdetails);
-                    await _context.SaveChangesAsync();
+                    if (viewProductdetailsImg.ProductdtImage != null)
+                    {
+                        string folder = "image/products/";
+                        folder += Guid.NewGuid().ToString() + "_" + viewProductdetailsImg.ProductdtImage.FileName;
+                        viewProductdetailsImg.LinkImage = "/" + folder;
+                        string severfolder = Path.Combine(webHostEnvironment.WebRootPath, folder);
+                        viewProductdetailsImg.ProductdtImage.CopyTo(new FileStream(severfolder, FileMode.Create));
+                    }
+                    productdetail.LinkImage = viewProductdetailsImg.LinkImage;
+                    _productdetails.Updateproductdetails(productdetail);
+                    //_context.Update(productdetails);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductdetailsExists(productdetails.Id))
+                    if (!ProductdetailsExists(productdetail.Id))
                     {
                         return NotFound();
                     }
@@ -140,9 +148,9 @@ namespace QLBH_project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriesID"] = new SelectList(_context.categories, "Id", "Name", productdetails.CategoriesID);
-            ViewData["ProductId"] = new SelectList(_context.products, "Id", "Name", productdetails.ProductId);
-            return View(productdetails);
+            ViewData["CategoriesID"] = new SelectList(_context.categories, "Id", "Name", viewProductdetailsImg.CategoriesID);
+            ViewData["ProductId"] = new SelectList(_context.products, "Id", "Name", viewProductdetailsImg.ProductId);
+            return View(productdetail);
         }
 
         // GET: productdetails/Delete/5

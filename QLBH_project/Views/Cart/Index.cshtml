@@ -4,11 +4,14 @@
 *@
 @{
     ViewData["Title"] = "Cart Overview";
-    var countCartItems = ViewData["countCartItems"] as string;
 }
 
 @if(Model.cartItems.Count>0){
+
     <h3>Giỏ hàng </h3>
+    @if (ViewBag.errorStock!= null){
+    <div class="alert alert-danger">@ViewBag.errorStock</div>
+}
     <table class="table">
         <thead>
             <tr>

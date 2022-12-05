@@ -1,0 +1,45 @@
+﻿@model IEnumerable<QLBH_project.Models.orderdetails>
+
+<h1 class="text-center">Chi tiết đơn hàng</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.productdetails)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.orders)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.productdetails.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orders.DateCreate)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

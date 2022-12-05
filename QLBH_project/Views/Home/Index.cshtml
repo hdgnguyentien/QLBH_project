@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    var errorStock = ViewData["errorStock"] as string;
+}
+@if (errorStock != null)
+{
+    <p>@errorStock</p>
 }
 <h1 class=" text-center">Sản Phẩm</h1>
   <div class="container">

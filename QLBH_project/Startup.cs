@@ -37,6 +37,9 @@ namespace QLBH_project
             services.AddMvc();
             services.AddScoped<IProductDetailRepositories, ProductDetailRepositories>();
             services.AddScoped<IEmployeeRepositories, EmployeeRepositories>();
+            services.AddScoped<ICustomerRepositories, CustomerRepositories>();
+            services.AddScoped<IOrderRepositories, OrderRepositories>();
+            services.AddScoped<IOrderDetailRepositories, OrderDetailRepositories>();
             services.AddScoped<ICartRepositories, CartRepositories>();
             services.AddScoped<IProductRepositories, ProductRepositories>();
             services.AddScoped<CuaHangDbContext, CuaHangDbContext>();

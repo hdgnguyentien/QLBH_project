@@ -1,0 +1,55 @@
+﻿@model IEnumerable<QLBH_project.Models.orders>
+@{
+    var thongbao = ViewData["result"] as string;
+}
+<h1 class="text-center">Hóa đơn</h1>
+@if(thongbao != null){
+    <a>@thongbao</a>
+}
+@if(Model!= null){
+        <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateCreate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.employees)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.customers)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                    <td>
+                        @(item.Status ? "Đã thanh toán" : "Chưa thanh toán")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.employees.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.customers.Phone)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

@@ -1,6 +1,7 @@
 ﻿
 @{
     var thongtin = ViewData["thongtin"] as string;
+    var idRole = ViewData["idRole"] as string;
 }
 
 <!DOCTYPE html>
@@ -25,51 +26,53 @@
         <li class="nav-item">
              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
         </li>
-        <li class="nav-item">
-                    <div class="btn-group">
-          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Quản lý nhân sự
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item text-dark" asp-controller="employees" asp-action="Index" >Nhân Viên</a>
-            <a class="dropdown-item text-dark" asp-controller="roles" asp-action="Index">Chức vụ</a>
+                        <li class="nav-item">
+                        <div class="btn-group">
+              <button type="button" class="btn dropdown-toggle"   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Quản lý nhân sự
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item text-dark" asp-controller="employees" asp-action="Index" >Nhân Viên</a>
+                <a class="dropdown-item text-dark" asp-controller="roles" asp-action="Index">Chức vụ</a>
 
-          </div>
-        </div>
-           
-        </li> 
-        <li class="nav-item">
-        <div class="btn-group">
-          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Quản lý Sản phẩm
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item text-dark" asp-controller="productdetails" asp-action="Index" >Sản phẩm chi tiết</a>
-            <a class="dropdown-item text-dark" asp-controller="products" asp-action="Index">Sản phẩm</a>
-            <a class="dropdown-item text-dark" asp-controller="categories" asp-action="Index">Thể loại</a>
+              </div>
+            </div>
 
-          </div>
-        </div>
-        </li>                        
+            </li> 
+            <li class="nav-item">
+            <div class="btn-group">
+              <button type="button" class="btn dropdown-toggle"   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Quản lý Sản phẩm
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item text-dark" asp-controller="productdetails" asp-action="Index" >Sản phẩm chi tiết</a>
+                <a class="dropdown-item text-dark" asp-controller="products" asp-action="Index">Sản phẩm</a>
+                <a class="dropdown-item text-dark" asp-controller="categories" asp-action="Index">Thể loại</a>
+
+              </div>
+            </div>
+            </li> 
+
+
+                      
                 <li class="nav-item">
         <div class="btn-group">
           <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Quản lý Khách hàng
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item text-dark" asp-controller="productdetails" asp-action="Index" >Sản phẩm chi tiết</a>
-            <a class="dropdown-item text-dark" asp-controller="products" asp-action="Index">Sản phẩm</a>
-            <a class="dropdown-item text-dark" asp-controller="categories" asp-action="Index">Thể loại</a>
-
+            <a class="dropdown-item text-dark" asp-controller="customers" asp-action="Index" >Quản lý khách hàng</a>
+            <a class="dropdown-item text-dark" asp-controller="Home" asp-action="HienThiDonHang">Đơn Hàng</a>
+            <a class="dropdown-item text-dark" asp-controller="Home" asp-action="Chitietdonhang">Chi tiết Đơn Hàng</a>
           </div>
         </div>
         </li>  
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      
+    <form class="form-inline my-2 my-lg-0"> 
       <div class="bagcart">
             @await Component.InvokeAsync("BagCart")
       </div>
+
         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">@thongtin</a>
     </form>
@@ -78,11 +81,7 @@
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-10">@RenderBody()</div>
-            </div>
-
+            @RenderBody()
         </main>
     </div>
 

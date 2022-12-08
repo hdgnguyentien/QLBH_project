@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace QLBH_project.Controllers
@@ -43,17 +44,27 @@ namespace QLBH_project.Controllers
         {
             return View(_orderdetail.GetAll());
         }
-        public IActionResult Index(Guid id)
+        public IActionResult DeleteHDChitiet(orderdetails ord)
+        {
+            if (_orderdetail.Removeorderdetails(ord))
+            {
+                return RedirectToAction("Chitietdonhang");
+            }
+            else return BadRequest();
+        }
+        public IActionResult DeleteHD(orders od)
+        {
+            if (_order.Removeorders(od))
+            {
+                return RedirectToAction("HienThiDonHang");
+            }
+            else return BadRequest();
+        }
+        public IActionResult Index()
         {
             var thongtin = HttpContext.Session.GetString("username");
-            var result = _productdetails.GetAll();
-            //HttpContext.Session.SetString("id_productdetails", id.ToString());
-            if (thongtin != null)
-            { 
-                ViewData["thongtin"] = thongtin;
-                return View(result);// truyền dư liệu đăng nhập từ session 
-            }
-            return View(result);
+            ViewData["thongtin"] = thongtin;
+            return View(_productdetails.GetAll());
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

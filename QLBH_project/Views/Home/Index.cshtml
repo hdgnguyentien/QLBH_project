@@ -11,32 +11,32 @@
 <h1 class=" text-center">Sản Phẩm</h1>
   <div class="container">
     <div class="row">
-        @foreach (var item in Model)
-        {
-          <div class="col-lg-4"  >
-            <div class="card" style="width: 22rem; margin-bottom: 30px">
-                   <img src="@item.LinkImage" >
-              <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-                        <h3 class="card-text fw-bold"> @Html.DisplayFor(modelItem => item.Price)</h3>
-                <div class="d-grid gap-2 d-md-block">
-                  <a class="btn btn-warning"
+                @foreach (var item in Model)
+                {
+                  <div class="col-lg-4"  >
+                    <div class="card" style="width: 22rem; margin-bottom: 30px">
+                           <img src="@item.LinkImage" >
+                      <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                <h3 class="card-text fw-bold"> @Html.DisplayFor(modelItem => item.Price)</h3>
+                        <div class="d-grid gap-2 d-md-block">
+                          <a class="btn btn-warning"
                     asp-controller="Cart" 
                     asp-action="AddtoCart"
                     asp-route-id="@item.Id">
-                    Thêm vào giỏ hàng
-                  </a>
-                   <a class="btn btn-danger"
+                            Thêm vào giỏ hàng
+                          </a>
+                           <a class="btn btn-danger"
                     asp-controller="Cart" 
                     asp-action="Add"
                     asp-route-id="@item.Id">
-                        Mua ngay
-                      </a>
-                </div>
-              </div>
+                                Mua ngay
+                              </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
             </div>
-          </div>
-        }
+        </div>
 
-    </div>
-  </div>

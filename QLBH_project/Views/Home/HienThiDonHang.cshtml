@@ -25,6 +25,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.customers)
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +47,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.customers.Phone)
                     </td>
-
+                    <td>
+                        <a asp-action="DeleteHD" asp-route-id="@item.Id">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

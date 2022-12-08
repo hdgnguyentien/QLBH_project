@@ -42,6 +42,8 @@ namespace QLBH_project
             services.AddScoped<IOrderDetailRepositories, OrderDetailRepositories>();
             services.AddScoped<ICartRepositories, CartRepositories>();
             services.AddScoped<IProductRepositories, ProductRepositories>();
+            services.AddScoped<IRoleRepositories, RoleRepositories>();
+            services.AddScoped<ICategoriesRepositories, CategoriesRepositories>();
             services.AddScoped<CuaHangDbContext, CuaHangDbContext>();
             
         }

@@ -27,25 +27,21 @@ namespace QLBH_project.Controllers
         {
             var thongtin = HttpContext.Session.GetString("username");
             ViewData["thongtin"] = thongtin;
-            var employees = _employee.GetAll();
-            return View(employees);
+
+            return View(_employee.GetAll());
         }
         // GET: employees/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var employees = await _context.employees
-                .Include(e => e.roles)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var employees = _employee.GetByID(id);
             if (employees == null)
             {
                 return NotFound();
             }
-
             return View(employees);
         }
 
@@ -56,33 +52,37 @@ namespace QLBH_project.Controllers
             return View();
         }
 
-        // POST: employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,roleID,Email,Password,Fullname,Address,Phone,Status")] employees employees)
+        public IActionResult Create([Bind("Id,roleID,Email,Password,Fullname,Address,Phone,Status")] employees employees)
         {
             if (ModelState.IsValid)
             {
-                employees.Id = Guid.NewGuid();
-                _context.Add(employees);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var emailDb =  _employee.GetAll().Where(x=>x.Email == employees.Email).FirstOrDefault();
+                if (emailDb == null)
+                {
+                    _employee.Addemployees(employees);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.emailerror = "Email đã tồn tại";
+                }
+
             }
             ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename", employees.roleID);
             return View(employees);
         }
 
         // GET: employees/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employees = await _context.employees.FindAsync(id);
+            var employees =  _employee.GetByID(id);
             if (employees == null)
             {
                 return NotFound();
@@ -91,12 +91,9 @@ namespace QLBH_project.Controllers
             return View(employees);
         }
 
-        // POST: employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,roleID,Email,Password,Fullname,Address,Phone,Status")] employees employees)
+        public IActionResult Edit(Guid id, [Bind("Id,roleID,Email,Password,Fullname,Address,Phone,Status")] employees employees)
         {
             if (id != employees.Id)
             {
@@ -105,61 +102,22 @@ namespace QLBH_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(employees);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!employeesExists(employees.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                    _employee.Updateemployees(employees);
+                    return RedirectToAction(nameof(Index));
             }
             ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename", employees.roleID);
             return View(employees);
         }
 
         // GET: employees/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(employees employee)
         {
-            if (id == null)
+            if (_employee.Removeemployees(employee))
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
-
-            var employees = await _context.employees
-                .Include(e => e.roles)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employees == null)
-            {
-                return NotFound();
-            }
-
-            return View(employees);
-        }
-
-        // POST: employees/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var employees = await _context.employees.FindAsync(id);
-            _context.employees.Remove(employees);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool employeesExists(Guid id)
-        {
-            return _context.employees.Any(e => e.Id == id);
+            return BadRequest();
         }
     }
 }

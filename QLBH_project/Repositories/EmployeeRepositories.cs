@@ -38,7 +38,7 @@ namespace QLBH_project.Repositories
 
         public employees GetByID(Guid id)
         {
-            return cuaHangDbContext.employees.FirstOrDefault(p => p.Id == id);
+            return cuaHangDbContext.employees.Include(x=>x.roles).FirstOrDefault(p => p.Id == id);
         }
         public bool Removeemployees(employees employees)
         {

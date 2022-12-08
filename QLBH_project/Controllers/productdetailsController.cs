@@ -39,15 +39,14 @@ namespace QLBH_project.Controllers
         {
             var thongtin = HttpContext.Session.GetString("username");
             ViewData["thongtin"] = thongtin;
-            var lst = _productdetails.GetAll();
-            return View(lst);
+
+            return View(_productdetails.GetAll());
         }
 
         // GET: productdetails/Details/5
         public IActionResult Details(Guid id)
         {
-            var product = _productdetails.GetByID(id);
-            return View(product);
+            return View(_productdetails.GetByID(id));
         }
 
         // GET: productdetails/Create
@@ -57,16 +56,11 @@ namespace QLBH_project.Controllers
             ViewData["ProductId"] = new SelectList(_context.products, "Id", "Name");
             return View();
         }
-
-        // POST: productdetails/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductId,CategoriesID,Name,OriginalPrice,Price,Stock,DateCreated,LinkImage,Status")] 
                                                 productdetails productdetails,
-                                                ViewProductdetails viewProductdetailsImg
-                                               )
+                                                ViewProductdetails viewProductdetailsImg)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +77,6 @@ namespace QLBH_project.Controllers
                 viewProductdetailsImg.Id = Guid.NewGuid();
                 productdetails.LinkImage = viewProductdetailsImg.LinkImage;
                 _productdetails.Addproductdetails(productdetails);
-                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoriesID"] = new SelectList(_context.categories, "Id", "Name", viewProductdetailsImg.CategoriesID);
@@ -106,8 +99,6 @@ namespace QLBH_project.Controllers
             ViewData["ProductId"] = new SelectList(_context.products, "Id", "Name", productdetails.ProductId);
             return View(productdetails);
         }
-
-        // POST: productdetails/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Guid id,productdetails productdetail,
@@ -132,8 +123,6 @@ namespace QLBH_project.Controllers
                     }
                     productdetail.LinkImage = viewProductdetailsImg.LinkImage;
                     _productdetails.Updateproductdetails(productdetail);
-                    //_context.Update(productdetails);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,38 +141,15 @@ namespace QLBH_project.Controllers
             ViewData["ProductId"] = new SelectList(_context.products, "Id", "Name", viewProductdetailsImg.ProductId);
             return View(productdetail);
         }
-
         // GET: productdetails/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(productdetails productdetail)
         {
-            if (id == null)
+            if (_productdetails.Removeproductdetails(productdetail))
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
-
-            var productdetails = await _context.productdetails
-                .Include(p => p.categories)
-                .Include(p => p.products)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productdetails == null)
-            {
-                return NotFound();
-            }
-
-            return View(productdetails);
+            else return BadRequest();
         }
-
-        // POST: productdetails/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var productdetails = await _context.productdetails.FindAsync(id);
-            _context.productdetails.Remove(productdetails);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool ProductdetailsExists(Guid id)
         {
             return _context.productdetails.Any(e => e.Id == id);

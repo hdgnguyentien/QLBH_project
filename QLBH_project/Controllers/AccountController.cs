@@ -26,13 +26,12 @@ namespace QLBH_project.Controllers
         }
         public IActionResult Login(string email, string password)
         {
-           
             var thongtin = HttpContext.Session.GetString("username");
             ViewData["thongtin"] = thongtin;
-
+            
             if (string.IsNullOrEmpty(email) || password.Length < 6)
             {
-                ViewData["ketqua"]= "Hãy nhập đúng email và mật khẩu tối thiểu 6 ký tự";
+                ViewData["ketqua"] = "Hãy nhập đúng email và mật khẩu tối thiểu 6 ký tự";
                 return View();
             }
             else
@@ -47,7 +46,7 @@ namespace QLBH_project.Controllers
                 {
                     ViewBag.errorEmail = "Sai thông tin đăng nhập, đăng nhập thất bại";
                 }
-            } 
+            }
             return View();
         }
         public IActionResult Resetpassword(string emailSend)
@@ -104,12 +103,15 @@ namespace QLBH_project.Controllers
         [HttpPost]
         public IActionResult Register(employees employees)
         {
-            if (ModelState.IsValid)
+            var emailDb = _employee.GetAll().Where(x => x.Email == employees.Email).FirstOrDefault();
+            if (emailDb == null)
             {
-                employees.Id = Guid.NewGuid();
-                _context.Add(employees);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Login));
+                _employee.Addemployees(employees);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.emailerror = "Email đã tồn tại";
             }
             ViewData["roleID"] = new SelectList(_context.roles, "Id", "Rolename", employees.roleID);
             return View(employees);

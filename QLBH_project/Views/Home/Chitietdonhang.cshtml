@@ -19,6 +19,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.orders)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +39,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.orders.DateCreate)
+            </td>
+            <td>
+                <a asp-action="DeleteHDChitiet" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

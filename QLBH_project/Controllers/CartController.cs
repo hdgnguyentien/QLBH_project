@@ -53,34 +53,34 @@ namespace QLBH_project.Controllers
         }
         public  IActionResult Add(Guid id)
         {
-            productdetails productdetails =  _productdetails.GetByID(id);
-            List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ??new List<CartItem>();
-            var idProdetail = _productdetails.GetAll().FirstOrDefault(x=>x.Id == id);
-            CartItem cartItem = cart.FirstOrDefault(x => x.IdProductdetails == id);         
-                if (cartItem == null)
+            productdetails productdetails = _productdetails.GetByID(id);
+            List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            var idProdetail = _productdetails.GetAll().Where(x => x.Id == id).FirstOrDefault();
+            CartItem cartItem = cart.Where(x => x.IdProductdetails == id).FirstOrDefault();
+            if (cartItem == null)
+            {
+                cart.Add(new CartItem(productdetails));
+            }
+            else
+            {
+                if (idProdetail.Stock == cartItem.Quatity)
                 {
-                    cart.Add(new CartItem(productdetails));
+                    ViewBag.errorStock = "Vượt quá số lượng cho phép";
+                    return View();
                 }
                 else
-                {                
-                    if (idProdetail.Stock == cartItem.Quatity)
-                    {
-                        ViewBag.errorStock = "Vượt quá số lượng cho phép";
-                        return RedirectToAction("AddtoCart");
-                    }
-                    else
-                    {
-                        cartItem.Quatity += 1;
-                    }   
+                {
+                    cartItem.Quatity += 1;
                 }
-                HttpContext.Session.SetObjectAsJson("Cart", cart);
+            }
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
             return RedirectToAction("Index");
         }
         public IActionResult AddtoCart(Guid id)
         {
             productdetails productdetails = _productdetails.GetByID(id);
             List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-            var idProdetail = _productdetails.GetAll().FirstOrDefault(x => x.Id == id);
+            var idProdetail = _productdetails.GetAll().Where(x => x.Id == id).FirstOrDefault();
             CartItem cartItem = cart.Where(x=>x.IdProductdetails == id).FirstOrDefault();
             if (cartItem == null)
             {
@@ -105,9 +105,10 @@ namespace QLBH_project.Controllers
         {
             var thongtin = HttpContext.Session.GetString("username");
             ViewData["thongtin"] = thongtin;
-            if (thongtin == null)
+            
+            if (thongtin == null)            
             {
-                RedirectToAction("Index");
+                return RedirectToAction("Login", "Account");
             }
             else
             {
@@ -119,7 +120,6 @@ namespace QLBH_project.Controllers
                 };
                 return View(viewCart);
             }
-            return RedirectToAction("Login", "Account");
         }
         public IActionResult CreateCustomer()
         {
@@ -137,8 +137,6 @@ namespace QLBH_project.Controllers
                 var addressCus = HttpContext.Session.GetString("address");
                 var thongtin = HttpContext.Session.GetString("username");
                 List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart");
-
-                ViewData["phone"] = phoneCus;
 
                 var idCustomer = _customer.GetAll().Where(x => x.Phone == phoneCus).FirstOrDefault();
                 var idEmployee = _employee.GetAll().Where(x => x.Email == thongtin).FirstOrDefault();
